@@ -40,13 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent1);
                 break;
             case R.id.face_addUser_btn:
-
+                Intent intent2 = new Intent(MainActivity.this,AddUserActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.face_updateUser_btn:
-
+                Intent intent3 = new Intent(MainActivity.this,UpdateUserActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.face_deleteUser_btn:
-
+                Intent intent4 = new Intent(MainActivity.this,DeleteUserActivity.class);
+                startActivity(intent4);
                 break;
             case R.id.face_identifyUser_btn:
 

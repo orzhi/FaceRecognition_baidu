@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetectFaceActivity"
-            android:label="@string/detect"/>
+        <activity
+            android:name=".DetectFaceActivity"
+            android:label="@string/detect" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -34,8 +35,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MatchFaceActivity"
-            android:label="@string/match"/>
+        <activity
+            android:name=".MatchFaceActivity"
+            android:label="@string/match" />
+        <activity android:name=".AddUserActivity" />
+        <activity android:name=".UpdateUserActivity" />
+        <activity android:name=".DeleteUserActivity"></activity>
     </application>
 
 </manifest>
