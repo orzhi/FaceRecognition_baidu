@@ -40,7 +40,8 @@
             android:label="@string/match" />
         <activity android:name=".AddUserActivity" />
         <activity android:name=".UpdateUserActivity" />
-        <activity android:name=".DeleteUserActivity"></activity>
+        <activity android:name=".DeleteUserActivity" />
+        <activity android:name=".IdentifyUserActivity"></activity>
     </application>
 
 </manifest>

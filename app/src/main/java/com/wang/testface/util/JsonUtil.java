@@ -81,4 +81,17 @@ public class JsonUtil {
             return "照片攻击";
         }
     }
+
+    public static double getScores(String s){
+        String scoresStr = s.substring(1,s.length()-2);
+        String[] scoreses = scoresStr.split(",");
+        double scores;
+        if (scoreses.length > 0){
+            scores = Double.parseDouble(scoreses[0]);
+        }else {
+            scores = Double.parseDouble(scoresStr);
+        }
+
+        return scores;
+    }
 }

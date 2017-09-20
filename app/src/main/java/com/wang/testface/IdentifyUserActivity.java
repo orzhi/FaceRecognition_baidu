@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class AddUserActivity extends AppCompatActivity {
+public class IdentifyUserActivity extends AppCompatActivity {
 
     private ImageView photo;
     private TextView account;
@@ -40,18 +40,18 @@ public class AddUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_user);
-        photo = (ImageView) findViewById(R.id.add_user_iv);
-        account = (TextView) findViewById(R.id.add_user_account);
-        Button getPhotoBtn = (Button) findViewById(R.id.add_user_getPhoto_btn);
-        Button startCameraBtn = (Button) findViewById(R.id.add_user_startCamera_btn);
+        setContentView(R.layout.activity_identify_user);
+        photo = (ImageView) findViewById(R.id.identify_user_iv);
+        account = (TextView) findViewById(R.id.identify_user_account);
+        Button getPhotoBtn = (Button) findViewById(R.id.identify_user_getPhoto_btn);
+        Button startCameraBtn = (Button) findViewById(R.id.identify_user_startCamera_btn);
 
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(AddUserActivity.this,
+                if (ContextCompat.checkSelfPermission(IdentifyUserActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddUserActivity.this,
+                    ActivityCompat.requestPermissions(IdentifyUserActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 } else {
                     getPhoto();
@@ -62,12 +62,12 @@ public class AddUserActivity extends AppCompatActivity {
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(AddUserActivity.this,
+                if (ContextCompat.checkSelfPermission(IdentifyUserActivity.this,
                         Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddUserActivity.this,
+                    ActivityCompat.requestPermissions(IdentifyUserActivity.this,
                             new String[]{Manifest.permission.CAMERA}, 2);
                 } else {
-                    imageUri = CameraUtil.startCamera(AddUserActivity.this, 2);
+                    imageUri = CameraUtil.startCamera(IdentifyUserActivity.this, 2);
                 }
             }
         });
@@ -88,7 +88,7 @@ public class AddUserActivity extends AppCompatActivity {
                 break;
             case 2:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    imageUri = CameraUtil.startCamera(AddUserActivity.this, 2);
+                    imageUri = CameraUtil.startCamera(IdentifyUserActivity.this, 2);
                 } else {
                     ToastUtil.show(this, "你拒绝了授权");
                 }
@@ -102,29 +102,32 @@ public class AddUserActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 1:
                 case 2:
-                    showPD("正在注册");
+                    showPD("正在识别");
                     Uri uri;
                     if (requestCode == 1) {
                         uri = data.getData();
                     } else {
                         uri = imageUri;
                     }
-                    Glide.with(AddUserActivity.this).load(uri).into(photo);
+                    Glide.with(IdentifyUserActivity.this).load(uri).into(photo);
 
-                    final String filePath = CameraUtil.getRealPathFromURI(AddUserActivity.this, uri);
-                    final HashMap<String, String> options = new HashMap<String, String>();
-                    options.put("action_type", "replace");
+                    final String filePath = CameraUtil.getRealPathFromURI(IdentifyUserActivity.this, uri);
+                    final HashMap<String, Object> options = new HashMap<String, Object>();
+                    options.put("user_top_num", 5);
+                    options.put("ext_fields","faceliveness");
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            final JSONObject res = client.addUser("uid2", "这是测试",
-                                    Arrays.asList("group1", "group2"), filePath, options);
+                            final JSONObject res = client.identifyUser(Arrays.asList("group1", "group2"),
+                                    filePath, options);
                             Log.e("返回的数据", res.toString());
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
                                         account.setText(res.toString(4));
+                                        Log.e("识别",res.toString(4));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -157,3 +160,4 @@ public class AddUserActivity extends AppCompatActivity {
     }
 
 }
+

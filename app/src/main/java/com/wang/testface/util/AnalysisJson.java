@@ -3,6 +3,7 @@ package com.wang.testface.util;
 import android.util.Log;
 
 import com.wang.testface.bean.DetectBean;
+import com.wang.testface.bean.IdentifyUserBean;
 import com.wang.testface.bean.MatchBean;
 
 import org.json.JSONArray;
@@ -154,5 +155,46 @@ public class AnalysisJson {
             }
         }
         return matchBeen;
+    }
+
+    public static IdentifyUserBean[] IdentifyUserJson(JSONObject jsonObject){
+        IdentifyUserBean[] identifyUserBeen = null;
+        int resultNum = 0;
+        try {
+            resultNum = jsonObject.getInt("result_num");
+            identifyUserBeen = new IdentifyUserBean[resultNum];
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONArray result = null;
+        try {
+            result = jsonObject.getJSONArray("result");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (result != null) {
+            for (int i = 0; i < resultNum; i++) {
+                IdentifyUserBean identify = new IdentifyUserBean();
+                try {
+                    JSONObject jsonObject1 = result.getJSONObject(i);
+                    identify.setUser_info(jsonObject1.getString("user_info"));
+                    identify.setGroup_id(jsonObject1.getString("group_id"));
+                    identify.setUid(jsonObject1.getString("uid"));
+                    identify.setScores(JsonUtil.getScores(jsonObject1.getString("scores")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    JSONObject extInfo = jsonObject.getJSONObject("ext_info");
+                    identify.setFaceliveness(extInfo.getDouble("faceliveness"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                identifyUserBeen[i] = identify;
+            }
+        }
+        return identifyUserBeen;
     }
 }
