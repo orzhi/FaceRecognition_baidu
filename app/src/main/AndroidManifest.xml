@@ -38,16 +38,36 @@
         <activity
             android:name=".MatchFaceActivity"
             android:label="@string/match" />
-        <activity android:name=".AddUserActivity" />
-        <activity android:name=".UpdateUserActivity" />
-        <activity android:name=".DeleteUserActivity" />
-        <activity android:name=".IdentifyUserActivity" />
-        <activity android:name=".VerifyUserActivity" />
-        <activity android:name=".GetUserActivity" />
-        <activity android:name=".GetGroupListActivity" />
-        <activity android:name=".GetGroupUsersActivity" />
-        <activity android:name=".AddGroupUserActivity" />
-        <activity android:name=".DeleteGroupUserActivity"></activity>
+        <activity
+            android:name=".AddUserActivity"
+            android:label="@string/face_addUser" />
+        <activity
+            android:name=".UpdateUserActivity"
+            android:label="@string/face_updateUser" />
+        <activity
+            android:name=".DeleteUserActivity"
+            android:label="@string/face_deleteUser" />
+        <activity
+            android:name=".IdentifyUserActivity"
+            android:label="@string/face_identifyUser" />
+        <activity
+            android:name=".VerifyUserActivity"
+            android:label="@string/face_verifyUser" />
+        <activity
+            android:name=".GetUserActivity"
+            android:label="@string/getUser" />
+        <activity
+            android:name=".GetGroupListActivity"
+            android:label="@string/getGroupList" />
+        <activity
+            android:name=".GetGroupUsersActivity"
+            android:label="@string/getGroupUsers" />
+        <activity
+            android:name=".AddGroupUserActivity"
+            android:label="@string/addGroupUser" />
+        <activity
+            android:name=".DeleteGroupUserActivity"
+            android:label="@string/deleteGroupUser" />
     </application>
 
 </manifest>
