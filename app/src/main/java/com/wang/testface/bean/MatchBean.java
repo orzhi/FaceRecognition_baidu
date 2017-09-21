@@ -57,7 +57,7 @@ public class MatchBean {
     public String toString() {
         return "照片" + (index_i + 1) + " 跟 照片" + (index_j + 1) +
                 "\n相似度为：" + (int) score + "%" +
-                "\n照片" + (index_i + 1) + "：" + JsonUtil.getFaceliveness(faceliveness_i) +
-                "\n照片" + (index_j + 1) + "：" + JsonUtil.getFaceliveness(faceliveness_j);
+                "\n照片" + (index_i + 1) + " 是否照片攻击：" + JsonUtil.getFaceliveness(faceliveness_i) +
+                "\n照片" + (index_j + 1) + " 是否照片攻击：" + JsonUtil.getFaceliveness(faceliveness_j);
     }
 }

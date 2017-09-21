@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import com.baidu.aip.face.AipFace;
 import com.bumptech.glide.Glide;
+import com.wang.testface.bean.IdentifyUserBean;
 import com.wang.testface.constant.FaceKey;
+import com.wang.testface.util.AnalysisJson;
 import com.wang.testface.util.CameraUtil;
 import com.wang.testface.util.ToastUtil;
 
@@ -32,7 +34,7 @@ import java.util.HashMap;
 public class IdentifyUserActivity extends AppCompatActivity {
 
     private ImageView photo;
-    private TextView account;
+    private TextView result;
     private AipFace client;
     private Uri imageUri;
     private ProgressDialog pd;
@@ -42,7 +44,7 @@ public class IdentifyUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identify_user);
         photo = (ImageView) findViewById(R.id.identify_user_iv);
-        account = (TextView) findViewById(R.id.identify_user_account);
+        result = (TextView) findViewById(R.id.identify_user_account);
         Button getPhotoBtn = (Button) findViewById(R.id.identify_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.identify_user_startCamera_btn);
 
@@ -125,11 +127,18 @@ public class IdentifyUserActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    StringBuilder sb = new StringBuilder();
                                     try {
-                                        account.setText(res.toString(4));
-                                        Log.e("识别",res.toString(4));
+                                        String errorCode = res.getString("error_code");
+                                        String errorMsg = res.getString("error_msg");
+                                        sb.append("识别失败，").append(errorMsg);
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        IdentifyUserBean[] userBeen = AnalysisJson.IdentifyUserJson(res);
+                                        for (int i = 0;i<userBeen.length;i++) {
+                                            sb.append("第").append(i).append("个识别结果").append("\n");
+                                            sb.append(userBeen[i]).append("\n\n");
+                                        }
+                                        result.setText(sb);
                                     }
                                     dismissPD();
                                 }

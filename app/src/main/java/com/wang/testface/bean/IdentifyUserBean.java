@@ -1,5 +1,7 @@
 package com.wang.testface.bean;
 
+import com.wang.testface.util.JsonUtil;
+
 import java.util.Arrays;
 
 /**
@@ -55,12 +57,10 @@ public class IdentifyUserBean {
 
     @Override
     public String toString() {
-        return "IdentifyUserBean{" +
-                "group_id='" + group_id + '\'' +
-                ", uid='" + uid + '\'' +
-                ", user_info='" + user_info + '\'' +
-                ", scores=" + scores +
-                ", faceliveness=" + faceliveness +
-                '}';
+        return "用户组号：" + group_id +
+                "\n用户的UID：" + uid +
+                "\n用户信息：" + user_info +
+                "\n识别分数：" + scores +
+                "\n是否照片攻击：" + JsonUtil.getFaceliveness(faceliveness);
     }
 }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,29 +33,36 @@ import java.util.HashMap;
 public class AddUserActivity extends AppCompatActivity {
 
     private ImageView photo;
-    private TextView account;
+    private TextView result;
     private AipFace client;
     private Uri imageUri;
     private ProgressDialog pd;
+    private EditText inputAcount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
         photo = (ImageView) findViewById(R.id.add_user_iv);
-        account = (TextView) findViewById(R.id.add_user_account);
+        result = (TextView) findViewById(R.id.add_user_account);
+        inputAcount = (EditText) findViewById(R.id.add_user_account_ev);
         Button getPhotoBtn = (Button) findViewById(R.id.add_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.add_user_startCamera_btn);
 
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(AddUserActivity.this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddUserActivity.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                String acount = inputAcount.getText().toString().trim();
+                if (acount.length() > 0) {
+                    if (ContextCompat.checkSelfPermission(AddUserActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(AddUserActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                    } else {
+                        getPhoto();
+                    }
                 } else {
-                    getPhoto();
+                    ToastUtil.show(AddUserActivity.this, "请输入账号");
                 }
             }
         });
@@ -62,12 +70,17 @@ public class AddUserActivity extends AppCompatActivity {
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(AddUserActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AddUserActivity.this,
-                            new String[]{Manifest.permission.CAMERA}, 2);
+                String acount = inputAcount.getText().toString().trim();
+                if (acount.length() > 0) {
+                    if (ContextCompat.checkSelfPermission(AddUserActivity.this,
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(AddUserActivity.this,
+                                new String[]{Manifest.permission.CAMERA}, 2);
+                    } else {
+                        imageUri = CameraUtil.startCamera(AddUserActivity.this, 2);
+                    }
                 } else {
-                    imageUri = CameraUtil.startCamera(AddUserActivity.this, 2);
+                    ToastUtil.show(AddUserActivity.this, "请输入账号");
                 }
             }
         });
@@ -102,7 +115,6 @@ public class AddUserActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 1:
                 case 2:
-                    showPD("正在注册");
                     Uri uri;
                     if (requestCode == 1) {
                         uri = data.getData();
@@ -111,20 +123,22 @@ public class AddUserActivity extends AppCompatActivity {
                     }
                     Glide.with(AddUserActivity.this).load(uri).into(photo);
 
+                    final String acount = inputAcount.getText().toString().trim();
+                    showPD("正在注册");
                     final String filePath = CameraUtil.getRealPathFromURI(AddUserActivity.this, uri);
                     final HashMap<String, String> options = new HashMap<String, String>();
                     options.put("action_type", "replace");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            final JSONObject res = client.addUser("uid2", "这是测试",
+                            final JSONObject res = client.addUser(acount, "这是测试" + acount,
                                     Arrays.asList("group1", "group2"), filePath, options);
                             Log.e("返回的数据", res.toString());
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
-                                        account.setText(res.toString(4));
+                                        result.setText(res.toString(4));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -144,7 +158,7 @@ public class AddUserActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    private void showPD(String title){
+    private void showPD(String title) {
         pd = new ProgressDialog(this);
         pd.setTitle(title);
         pd.setMessage("任务正在执行，请稍等");
@@ -152,7 +166,7 @@ public class AddUserActivity extends AppCompatActivity {
         pd.show();
     }
 
-    private void dismissPD(){
+    private void dismissPD() {
         pd.dismiss();
     }
 
