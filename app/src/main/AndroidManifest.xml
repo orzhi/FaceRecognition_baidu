@@ -42,7 +42,12 @@
         <activity android:name=".UpdateUserActivity" />
         <activity android:name=".DeleteUserActivity" />
         <activity android:name=".IdentifyUserActivity" />
-        <activity android:name=".VerifyUserActivity"></activity>
+        <activity android:name=".VerifyUserActivity" />
+        <activity android:name=".GetUserActivity" />
+        <activity android:name=".GetGroupListActivity" />
+        <activity android:name=".GetGroupUsersActivity" />
+        <activity android:name=".AddGroupUserActivity" />
+        <activity android:name=".DeleteGroupUserActivity"></activity>
     </application>
 
 </manifest>

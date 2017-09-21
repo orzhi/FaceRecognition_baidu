@@ -7,4 +7,16 @@
     <string name="match">人脸对比</string>
     <string name="input_acount">请输入账号</string>
     <string name="acount">账号：</string>
+    <string name="detect_face">人脸检测</string>
+    <string name="face_match">人脸对比</string>
+    <string name="face_addUser">人脸注册</string>
+    <string name="face_updateUser">人脸更新</string>
+    <string name="face_deleteUser">人脸删除</string>
+    <string name="face_identifyUser">人脸识别</string>
+    <string name="face_verifyUser">人脸认证</string>
+    <string name="getUser">用户信息查询</string>
+    <string name="getGroupList">组列表查询</string>
+    <string name="getGroupUsers">组内用户列表查询</string>
+    <string name="addGroupUser">组间复制用户</string>
+    <string name="deleteGroupUser">组内删除用户</string>
 </resources>

@@ -17,14 +17,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸检测" />
+            android:text="@string/detect_face" />
 
         <Button
             android:id="@+id/face_match_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸对比" />
+            android:text="@string/face_match" />
     </LinearLayout>
 
     <LinearLayout
@@ -37,21 +37,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸注册" />
+            android:text="@string/face_addUser" />
 
         <Button
             android:id="@+id/face_updateUser_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸更新" />
+            android:text="@string/face_updateUser" />
 
         <Button
             android:id="@+id/face_deleteUser_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸删除" />
+            android:text="@string/face_deleteUser" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,13 +64,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸识别" />
+            android:text="@string/face_identifyUser" />
 
         <Button
             android:id="@+id/face_verifyUser_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="人脸认证" />
+            android:text="@string/face_verifyUser" />
     </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/hui"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <Button
+        android:text="@string/getUser"
+        android:id="@+id/getUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/getGroupList"
+        android:text="@string/getGroupList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/getGroupUsers"
+        android:text="@string/getGroupUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/addGroupUser"
+        android:text="@string/addGroupUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="@string/deleteGroupUser"
+        android:id="@+id/deleteGroupUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

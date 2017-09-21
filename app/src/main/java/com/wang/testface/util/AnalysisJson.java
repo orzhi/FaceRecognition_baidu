@@ -3,6 +3,7 @@ package com.wang.testface.util;
 import android.util.Log;
 
 import com.wang.testface.bean.DetectBean;
+import com.wang.testface.bean.GetUser;
 import com.wang.testface.bean.IdentifyUserBean;
 import com.wang.testface.bean.MatchBean;
 
@@ -17,7 +18,6 @@ import org.json.JSONObject;
 public class AnalysisJson {
 
     /**
-     *
      * @param jsonObject response
      * @return 是一个数组
      */
@@ -114,7 +114,7 @@ public class AnalysisJson {
     }
 
 
-    public static MatchBean[] MatchJson(JSONObject jsonObject){
+    public static MatchBean[] MatchJson(JSONObject jsonObject) {
         MatchBean[] matchBeen = null;
         int resultNum = 0;
         try {
@@ -138,7 +138,7 @@ public class AnalysisJson {
                     match.setIndex_j(jsonObject1.getInt("index_j"));
                     match.setScore(jsonObject1.getDouble("score"));
                 } catch (JSONException e) {
-                    Log.e("这里3",e.getMessage());
+                    Log.e("这里3", e.getMessage());
                     e.printStackTrace();
                 }
 
@@ -157,7 +157,7 @@ public class AnalysisJson {
         return matchBeen;
     }
 
-    public static IdentifyUserBean[] IdentifyUserJson(JSONObject jsonObject){
+    public static IdentifyUserBean[] IdentifyUserJson(JSONObject jsonObject) {
         IdentifyUserBean[] identifyUserBeen = null;
         int resultNum = 0;
         try {
@@ -196,5 +196,50 @@ public class AnalysisJson {
             }
         }
         return identifyUserBeen;
+    }
+
+    public static GetUser[] GetUserJson(JSONObject jsonObject) {
+        GetUser[] getUsers = null;
+        int resultNum = 0;
+        try {
+            resultNum = jsonObject.getInt("result_num");
+            getUsers = new GetUser[resultNum];
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONArray result = null;
+        try {
+            result = jsonObject.getJSONArray("result");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (result != null) {
+            for (int i = 0; i < resultNum; i++) {
+                GetUser getUser = new GetUser();
+                JSONObject jsonObject1 = null;
+                try {
+                    jsonObject1 = result.getJSONObject(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (jsonObject1 != null) {
+                    try {
+                        getUser.setUid(jsonObject1.getString("uid"));
+                        getUser.setUserInfo(jsonObject1.getString("user_info"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        getUser.setGroupId(jsonObject1.getString("group_id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                getUsers[i] = getUser;
+            }
+        }
+        return getUsers;
     }
 }
