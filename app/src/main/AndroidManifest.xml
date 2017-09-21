@@ -41,7 +41,8 @@
         <activity android:name=".AddUserActivity" />
         <activity android:name=".UpdateUserActivity" />
         <activity android:name=".DeleteUserActivity" />
-        <activity android:name=".IdentifyUserActivity"></activity>
+        <activity android:name=".IdentifyUserActivity" />
+        <activity android:name=".VerifyUserActivity"></activity>
     </application>
 
 </manifest>

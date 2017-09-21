@@ -1,5 +1,7 @@
 package com.wang.testface.util;
 
+import android.util.Log;
+
 /**
  * Created by 夜雨飘零 on 2017/9/19.
  */
@@ -83,15 +85,30 @@ public class JsonUtil {
     }
 
     public static double getScores(String s){
+        Log.e("结果数 ",s);
         String scoresStr = s.substring(1,s.length()-2);
-        String[] scoreses = scoresStr.split(",");
+        String[] scoresesStr = scoresStr.split(",");
         double scores;
-        if (scoreses.length > 0){
-            scores = Double.parseDouble(scoreses[0]);
+        if (scoresesStr.length > 0){
+            scores = Double.parseDouble(scoresesStr[0]);
+            for (String s1:scoresesStr) {
+                double temp = Double.parseDouble(s1);
+                if (temp > scores){
+                    scores = temp;
+                }
+            }
         }else {
             scores = Double.parseDouble(scoresStr);
         }
-
+        Log.e("最后结果", String.valueOf(scores));
         return scores;
+    }
+
+    public static String getResult(double r){
+        if (r > 80){
+            return "通过";
+        }else {
+            return "拒绝";
+        }
     }
 }

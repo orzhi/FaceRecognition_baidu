@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent5);
                 break;
             case R.id.face_verifyUser_btn:
-
+                Intent intent6 = new Intent(MainActivity.this,VerifyUserActivity.class);
+                startActivity(intent6);
                 break;
 
         }
