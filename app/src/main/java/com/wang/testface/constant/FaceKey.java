@@ -6,8 +6,7 @@ package com.wang.testface.constant;
 
 public class FaceKey {
     //设置APPID/AK/SK
-    public static final String APP_ID = "你的AppID";
-    public static final String API_KEY = "你的API_Key";
-    public static final String SECRET_KEY = "你的Secret_Key";
-
+    public static final String APP_ID = "10159441";
+    public static final String API_KEY = "N1qL5p3mUh6CnBwfioLrIgBl";
+    public static final String SECRET_KEY = "aWDqnmDg6qkvA8BvMqBdbitwVFk9NOlC";
 }
