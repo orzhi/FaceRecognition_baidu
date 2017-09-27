@@ -9,4 +9,5 @@ public class FaceKey {
     public static final String APP_ID = "你的AppID";
     public static final String API_KEY = "你的API_Key";
     public static final String SECRET_KEY = "你的Secret_Key";
+
 }

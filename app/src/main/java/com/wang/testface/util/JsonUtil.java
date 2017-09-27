@@ -52,9 +52,9 @@ public class JsonUtil {
         return race;
     }
 
-    public static String getGlasses(int g){
+    public static String getGlasses(int g) {
         String glasses = "Unknown";
-        switch (g){
+        switch (g) {
             case 0:
                 glasses = "不带眼镜";
                 break;
@@ -68,46 +68,50 @@ public class JsonUtil {
         return glasses;
     }
 
-    public static String getGender(String g){
-        if (g.equals("male")){
+    public static String getGender(String g) {
+        if (g.equals("male")) {
             return "男";
-        }else {
+        } else {
             return "女";
         }
     }
 
-    public static String getFaceliveness(double f){
-        if (f > 0.4494){
+    public static String getFaceliveness(double f) {
+        if (f > 0.4494) {
             return "非照片攻击";
-        }else {
+        } else {
             return "照片攻击";
         }
     }
 
-    public static double getScores(String s){
-        Log.e("结果数 ",s);
-        String scoresStr = s.substring(1,s.length()-2);
+    public static double getScores(String s) {
+        Log.e("结果数 ", s);
+        if (s.equals("[0]")) {
+            s = "[0.0]";
+        }
+        String scoresStr = s.substring(1, s.length() - 2);
         String[] scoresesStr = scoresStr.split(",");
         double scores;
-        if (scoresesStr.length > 0){
+        if (scoresesStr.length > 0) {
+            Log.e("获得的数", scoresStr);
             scores = Double.parseDouble(scoresesStr[0]);
-            for (String s1:scoresesStr) {
+            for (String s1 : scoresesStr) {
                 double temp = Double.parseDouble(s1);
-                if (temp > scores){
+                if (temp > scores) {
                     scores = temp;
                 }
             }
-        }else {
+        } else {
             scores = Double.parseDouble(scoresStr);
         }
         Log.e("最后结果", String.valueOf(scores));
         return scores;
     }
 
-    public static String getResult(double r){
-        if (r > 80){
+    public static String getResult(double r) {
+        if (r > 80) {
             return "通过";
-        }else {
+        } else {
             return "拒绝";
         }
     }
