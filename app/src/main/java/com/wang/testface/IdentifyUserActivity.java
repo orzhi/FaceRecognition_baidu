@@ -23,11 +23,13 @@ import com.wang.testface.bean.IdentifyUserBean;
 import com.wang.testface.constant.FaceKey;
 import com.wang.testface.util.AnalysisJson;
 import com.wang.testface.util.CameraUtil;
+import com.wang.testface.util.CompressBitmapUtil;
 import com.wang.testface.util.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -113,7 +115,8 @@ public class IdentifyUserActivity extends AppCompatActivity {
                     }
                     Glide.with(IdentifyUserActivity.this).load(uri).into(photo);
 
-                    final String filePath = CameraUtil.getRealPathFromURI(IdentifyUserActivity.this, uri);
+                    final String filePath = CompressBitmapUtil.CompressBitmap(
+                            CameraUtil.getRealPathFromURI(IdentifyUserActivity.this,uri));
                     final HashMap<String, Object> options = new HashMap<String, Object>();
                     options.put("user_top_num", 5);
                     options.put("ext_fields","faceliveness");
@@ -141,6 +144,11 @@ public class IdentifyUserActivity extends AppCompatActivity {
                                         result.setText(sb);
                                     }
                                     dismissPD();
+                                    //删除临时照片
+                                    File file = new File(filePath);
+                                    if (file.exists()){
+                                        file.delete();
+                                    }
                                 }
                             });
                         }

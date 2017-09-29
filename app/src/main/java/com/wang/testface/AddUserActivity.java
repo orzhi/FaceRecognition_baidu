@@ -22,11 +22,13 @@ import com.baidu.aip.face.AipFace;
 import com.bumptech.glide.Glide;
 import com.wang.testface.constant.FaceKey;
 import com.wang.testface.util.CameraUtil;
+import com.wang.testface.util.CompressBitmapUtil;
 import com.wang.testface.util.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -38,6 +40,7 @@ public class AddUserActivity extends AppCompatActivity {
     private Uri imageUri;
     private ProgressDialog pd;
     private EditText inputAcount;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +128,8 @@ public class AddUserActivity extends AppCompatActivity {
 
                     final String acount = inputAcount.getText().toString().trim();
                     showPD("正在注册");
-                    final String filePath = CameraUtil.getRealPathFromURI(AddUserActivity.this, uri);
+                    filePath = CompressBitmapUtil.CompressBitmap(
+                         CameraUtil.getRealPathFromURI(AddUserActivity.this,uri));
                     final HashMap<String, String> options = new HashMap<String, String>();
                     options.put("action_type", "replace");
                     new Thread(new Runnable() {
@@ -143,6 +147,11 @@ public class AddUserActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                     dismissPD();
+                                    //删除临时照片
+                                    File file = new File(filePath);
+                                    if (file.exists()){
+                                        file.delete();
+                                    }
                                 }
                             });
                         }

@@ -6,15 +6,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,11 +27,13 @@ import com.wang.testface.bean.MatchBean;
 import com.wang.testface.constant.FaceKey;
 import com.wang.testface.util.AnalysisJson;
 import com.wang.testface.util.CameraUtil;
+import com.wang.testface.util.CompressBitmapUtil;
 import com.wang.testface.util.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,10 +57,28 @@ public class MatchFaceActivity extends AppCompatActivity {
                 case 1:
                     dismissPD();
                     photoInfo.setText((String) msg.obj);
+                    //删除临时照片
+                    File file = new File(photoPath[0]);
+                    File file1 = new File(photoPath[1]);
+                    if (file.exists()){
+                        file.delete();
+                    }
+                    if (file1.exists()){
+                        file1.delete();
+                    }
                     break;
                 case 2:
                     dismissPD();
                     ToastUtil.show(MatchFaceActivity.this, (String) msg.obj);
+                    //删除临时照片
+                    File file2 = new File(photoPath[0]);
+                    File file3 = new File(photoPath[1]);
+                    if (file2.exists()){
+                        file2.delete();
+                    }
+                    if (file3.exists()){
+                        file3.delete();
+                    }
                     break;
             }
         }
@@ -192,11 +211,13 @@ public class MatchFaceActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 1:
                     Uri uri = data.getData();
-                    photoPath[photoIndex] = CameraUtil.getRealPathFromURI(MatchFaceActivity.this, uri);
+                    photoPath[photoIndex] = CompressBitmapUtil.CompressBitmap(
+                            CameraUtil.getRealPathFromURI(MatchFaceActivity.this,uri));
                     Glide.with(MatchFaceActivity.this).load(uri).into(imageIv[photoIndex]);
                     break;
                 case 2:
-                    photoPath[photoIndex] = CameraUtil.getRealPathFromURI(MatchFaceActivity.this, imageUri);
+                    photoPath[photoIndex] = CompressBitmapUtil.CompressBitmap(
+                            CameraUtil.getRealPathFromURI(MatchFaceActivity.this,imageUri));
                     Glide.with(MatchFaceActivity.this).load(imageUri).into(imageIv[photoIndex]);
                     break;
             }

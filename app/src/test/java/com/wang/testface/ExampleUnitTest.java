@@ -1,6 +1,10 @@
 package com.wang.testface;
 
+import com.wang.testface.util.CompressBitmapUtil;
+
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +16,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+        File file = new File("E:\\11.jpg");
+        System.out.println(file.length()/1024/1024);
     }
 }

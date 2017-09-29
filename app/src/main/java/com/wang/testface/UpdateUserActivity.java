@@ -22,11 +22,13 @@ import com.baidu.aip.face.AipFace;
 import com.bumptech.glide.Glide;
 import com.wang.testface.constant.FaceKey;
 import com.wang.testface.util.CameraUtil;
+import com.wang.testface.util.CompressBitmapUtil;
 import com.wang.testface.util.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -125,7 +127,8 @@ public class UpdateUserActivity extends AppCompatActivity {
 
                     final String acount = inputAcount.getText().toString().trim();
                     showPD("正在更新");
-                    final String filePath = CameraUtil.getRealPathFromURI(UpdateUserActivity.this, uri);
+                    final String filePath = CompressBitmapUtil.CompressBitmap(
+                            CameraUtil.getRealPathFromURI(UpdateUserActivity.this,uri));
                     final HashMap<String, String> options = new HashMap<String, String>();
                     options.put("action_type", "replace");
                     new Thread(new Runnable() {
@@ -142,6 +145,11 @@ public class UpdateUserActivity extends AppCompatActivity {
                                         account.setText(res.toString(4));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
+                                    }
+                                    //删除临时照片
+                                    File file = new File(filePath);
+                                    if (file.exists()){
+                                        file.delete();
                                     }
                                 }
                             });

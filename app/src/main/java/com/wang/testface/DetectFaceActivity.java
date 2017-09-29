@@ -32,6 +32,7 @@ import com.wang.testface.bean.DetectBean;
 import com.wang.testface.constant.FaceKey;
 import com.wang.testface.util.AnalysisJson;
 import com.wang.testface.util.CameraUtil;
+import com.wang.testface.util.CompressBitmapUtil;
 import com.wang.testface.util.ToastUtil;
 
 import org.json.JSONException;
@@ -54,15 +55,26 @@ public class DetectFaceActivity extends AppCompatActivity {
                 case 1:
                     dismissPD();
                     photoInfo.setText((String) msg.obj);
+                    //删除临时照片
+                    File file = new File(filePath);
+                    if (file.exists()){
+                        file.delete();
+                    }
                     break;
                 case 2:
                     ToastUtil.show(DetectFaceActivity.this, (String) msg.obj);
                     dismissPD();
+                    //删除临时照片
+                    File file2 = new File(filePath);
+                    if (file2.exists()){
+                        file2.delete();
+                    }
                     break;
             }
         }
     };
     private ProgressDialog pd;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +149,8 @@ public class DetectFaceActivity extends AppCompatActivity {
                         uri = cameraUri;
                     }
 
-                    final String filePath = CameraUtil.getRealPathFromURI(DetectFaceActivity.this,uri);
+                    filePath = CompressBitmapUtil.CompressBitmap(
+                            CameraUtil.getRealPathFromURI(DetectFaceActivity.this,uri));
 
                     Glide.with(DetectFaceActivity.this).load(uri).into(image);
 
