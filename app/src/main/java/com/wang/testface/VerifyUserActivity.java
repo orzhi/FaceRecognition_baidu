@@ -35,6 +35,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * 人脸认证
+ */
 public class VerifyUserActivity extends AppCompatActivity {
     private ImageView photo;
     private TextView result;
@@ -54,6 +57,7 @@ public class VerifyUserActivity extends AppCompatActivity {
         Button getPhotoBtn = (Button) findViewById(R.id.verify_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.verify_user_startCamera_btn);
 
+        //从相册获取照片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +76,7 @@ public class VerifyUserActivity extends AppCompatActivity {
             }
         });
 
+        //打开相机拍照
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,14 +128,17 @@ public class VerifyUserActivity extends AppCompatActivity {
                     showPD("正在认证");
                     Uri uri;
                     if (requestCode == 1) {
+                        //获取相册的URI
                         uri = data.getData();
                     } else {
+                        //获取相机拍的URI
                         uri = imageUri;
                     }
                     Glide.with(VerifyUserActivity.this).load(uri).into(photo);
 
+                    //获取压缩的图片
                     final String filePath = CompressBitmapUtil.CompressBitmap(
-                            CameraUtil.getRealPathFromURI(VerifyUserActivity.this,uri));
+                            CameraUtil.getRealPathFromURI(VerifyUserActivity.this, uri));
                     final HashMap<String, Object> options = new HashMap<String, Object>(1);
                     options.put("top_num", 5);
                     options.put("ext_fields", "faceliveness");
@@ -159,7 +167,7 @@ public class VerifyUserActivity extends AppCompatActivity {
                                             JSONObject jsonObject = res.getJSONObject("ext_info");
                                             double faceliveness = jsonObject.getDouble("faceliveness");
                                             sb.append("认证结果：").append(JsonUtil.getResult(results))
-                                                    .append("相似度为：").append((int)results).append("%")
+                                                    .append("相似度为：").append((int) results).append("%")
                                                     .append("\n");
                                             sb.append("是否照片攻击:")
                                                     .append(JsonUtil.getFaceliveness(faceliveness))
@@ -172,7 +180,7 @@ public class VerifyUserActivity extends AppCompatActivity {
                                     dismissPD();
                                     //删除临时照片
                                     File file = new File(filePath);
-                                    if (file.exists()){
+                                    if (file.exists()) {
                                         file.delete();
                                     }
                                 }
@@ -184,6 +192,7 @@ public class VerifyUserActivity extends AppCompatActivity {
         }
     }
 
+    //打开相册
     private void getPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -199,7 +208,9 @@ public class VerifyUserActivity extends AppCompatActivity {
     }
 
     private void dismissPD() {
-        pd.dismiss();
+        if (pd != null) {
+            pd.dismiss();
+        }
     }
 
 }

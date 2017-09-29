@@ -34,6 +34,7 @@ public class GetGroupUsersActivity extends AppCompatActivity {
         resultTv = (TextView) findViewById(R.id.get_group_users_result);
         Button getUserBtn = (Button) findViewById(R.id.get_group_users);
 
+        //获取该组的所有用户
         getUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,8 +46,11 @@ public class GetGroupUsersActivity extends AppCompatActivity {
                         public void run() {
                             final StringBuilder sb = new StringBuilder();
                             HashMap<String, Object> options = new HashMap<String, Object>(2);
+                            //从第0个开始
                             options.put("start", 0);
+                            //查找10个
                             options.put("num", 10);
+                            //获取结果
                             final JSONObject res = client.getGroupUsers(group, options);
 
                             Log.e("返回的结果", res.toString());
@@ -55,9 +59,11 @@ public class GetGroupUsersActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     try {
+                                        //判断返回是否是错误码
                                         String errorMsg = res.getString("error_msg");
                                         sb.append("发生错误").append(errorMsg);
                                     } catch (JSONException e) {
+                                        //获取成功
                                         GetUser[] getUsers = AnalysisJson.GetUserJson(res);
                                         if (getUsers.length > 0){
                                             for (int i = 0; i < getUsers.length; i++) {

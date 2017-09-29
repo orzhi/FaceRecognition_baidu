@@ -32,6 +32,7 @@ public class DeleteGroupUserActivity extends AppCompatActivity {
         resultTv = (TextView) findViewById(R.id.get_delete_group_users_result);
         Button delete = (Button) findViewById(R.id.get_delete_group_users_delete);
 
+        //删除用户
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,11 +43,13 @@ public class DeleteGroupUserActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            //删除操作
                             final JSONObject res = client.deleteGroupUser(Arrays.asList(group1), uid1);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
+                                        //显示返回的JSON数据
                                         resultTv.setText(res.toString(4));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -61,6 +64,8 @@ public class DeleteGroupUserActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 

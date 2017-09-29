@@ -32,6 +32,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * 更新用户
+ */
 public class UpdateUserActivity extends AppCompatActivity {
 
     private ImageView photo;
@@ -51,6 +54,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         Button getPhotoBtn = (Button) findViewById(R.id.update_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.update_user_startCamera_btn);
 
+        //从相机获取图片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +73,7 @@ public class UpdateUserActivity extends AppCompatActivity {
             }
         });
 
+        //启动相机拍照
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,14 +124,18 @@ public class UpdateUserActivity extends AppCompatActivity {
                 case 2:
                     Uri uri;
                     if (requestCode == 1) {
+                        //获取相册的照片的URI
                         uri = data.getData();
                     } else {
+                        //获取相机拍的照片的URI
                         uri = imageUri;
                     }
+                    //使用图片框架显示图片
                     Glide.with(UpdateUserActivity.this).load(uri).into(photo);
 
                     final String acount = inputAcount.getText().toString().trim();
                     showPD("正在更新");
+                    //获取压缩过的图片，包括通过URI获取图片路径
                     final String filePath = CompressBitmapUtil.CompressBitmap(
                             CameraUtil.getRealPathFromURI(UpdateUserActivity.this,uri));
                     final HashMap<String, String> options = new HashMap<String, String>();
@@ -160,6 +169,7 @@ public class UpdateUserActivity extends AppCompatActivity {
         }
     }
 
+    //打开相册
     private void getPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");

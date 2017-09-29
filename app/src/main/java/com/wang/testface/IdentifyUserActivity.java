@@ -33,6 +33,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * 人脸识别
+ */
 public class IdentifyUserActivity extends AppCompatActivity {
 
     private ImageView photo;
@@ -50,6 +53,7 @@ public class IdentifyUserActivity extends AppCompatActivity {
         Button getPhotoBtn = (Button) findViewById(R.id.identify_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.identify_user_startCamera_btn);
 
+        //从相册获取照片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +67,7 @@ public class IdentifyUserActivity extends AppCompatActivity {
             }
         });
 
+        //启动相机拍照
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +81,7 @@ public class IdentifyUserActivity extends AppCompatActivity {
             }
         });
 
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 
@@ -109,21 +115,27 @@ public class IdentifyUserActivity extends AppCompatActivity {
                     showPD("正在识别");
                     Uri uri;
                     if (requestCode == 1) {
+                        //从相册获取的URI
                         uri = data.getData();
                     } else {
+                        //从相机获取的URI
                         uri = imageUri;
                     }
+                    //使用框架显示图片
                     Glide.with(IdentifyUserActivity.this).load(uri).into(photo);
 
+                    //获取压缩过的图片，包括通过URI获取图片路径
                     final String filePath = CompressBitmapUtil.CompressBitmap(
                             CameraUtil.getRealPathFromURI(IdentifyUserActivity.this,uri));
                     final HashMap<String, Object> options = new HashMap<String, Object>();
                     options.put("user_top_num", 5);
+                    //是否活体检测
                     options.put("ext_fields","faceliveness");
 
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            //获取识别结果
                             final JSONObject res = client.identifyUser(Arrays.asList("group1", "group2"),
                                     filePath, options);
                             Log.e("返回的数据", res.toString());
@@ -132,10 +144,12 @@ public class IdentifyUserActivity extends AppCompatActivity {
                                 public void run() {
                                     StringBuilder sb = new StringBuilder();
                                     try {
+                                        //判断返回是否是错误码
                                         String errorCode = res.getString("error_code");
                                         String errorMsg = res.getString("error_msg");
                                         sb.append("识别失败，").append(errorMsg);
                                     } catch (JSONException e) {
+                                        //获取成功
                                         IdentifyUserBean[] userBeen = AnalysisJson.IdentifyUserJson(res);
                                         for (int i = 0;i<userBeen.length;i++) {
                                             sb.append("第").append(i).append("个识别结果").append("\n");

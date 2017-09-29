@@ -35,6 +35,7 @@ public class GetUserActivity extends AppCompatActivity {
         Button one = (Button) findViewById(R.id.get_user_one);
         Button all = (Button) findViewById(R.id.get_user_all);
 
+        //查找用户在所有组的信息
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,9 +54,11 @@ public class GetUserActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     try {
+                                        //判断返回是否是错误码
                                         String errorMsg = res.getString("error_msg");
                                         sb.append("发生错误").append(errorMsg);
                                     } catch (JSONException e) {
+                                        //获取成功
                                         GetUser[] getUsers = AnalysisJson.GetUserJson(res);
                                         for (int i = 0; i < getUsers.length; i++) {
                                             GetUser g = getUsers[i];
@@ -73,6 +76,7 @@ public class GetUserActivity extends AppCompatActivity {
             }
         });
 
+        //查找用户在特定组的信息
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

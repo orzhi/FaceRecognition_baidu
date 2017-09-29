@@ -35,11 +35,15 @@ public class AddGroupUserActivity extends AppCompatActivity {
         resultTv = (TextView) findViewById(R.id.get_add_group_users_result);
         Button copy = (Button) findViewById(R.id.get_add_group_users_copy);
 
+        //把数据复制到另外一个组
         copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //久的组
                 final String srcgroup = oldGroup.getText().toString().trim();
+                //要复制的账号
                 final String uid1 = acount.getText().toString().trim();
+                //新的组
                 final String dstGroup1 = newGroup.getText().toString().trim();
                 if (srcgroup.length() > 0 || dstGroup1.length() > 0 || uid1.length() > 0) {
                     showPD("正在复制");
@@ -70,6 +74,7 @@ public class AddGroupUserActivity extends AppCompatActivity {
     }
 
 
+    //显示对话框
     private void showPD(String title) {
         pd = new ProgressDialog(this);
         pd.setTitle(title);

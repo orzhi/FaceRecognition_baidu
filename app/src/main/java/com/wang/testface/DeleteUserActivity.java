@@ -33,6 +33,7 @@ public class DeleteUserActivity extends AppCompatActivity {
         Button deleteGroup = (Button) findViewById(R.id.delete_group_btn);
         Button deleteUser = (Button) findViewById(R.id.delete_user_btn);
 
+        //删除用户
         deleteGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +64,7 @@ public class DeleteUserActivity extends AppCompatActivity {
             }
         });
 
+        // 从人脸库中彻底删除用户
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +95,7 @@ public class DeleteUserActivity extends AppCompatActivity {
             }
         });
 
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 

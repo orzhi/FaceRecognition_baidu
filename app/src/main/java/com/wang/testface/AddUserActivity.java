@@ -52,6 +52,7 @@ public class AddUserActivity extends AppCompatActivity {
         Button getPhotoBtn = (Button) findViewById(R.id.add_user_getPhoto_btn);
         Button startCameraBtn = (Button) findViewById(R.id.add_user_startCamera_btn);
 
+        //从相册获取图片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +71,7 @@ public class AddUserActivity extends AppCompatActivity {
             }
         });
 
+        //打开相机
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +90,7 @@ public class AddUserActivity extends AppCompatActivity {
             }
         });
 
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 
@@ -96,6 +99,7 @@ public class AddUserActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
+                //从相册获取
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getPhoto();
                 } else {
@@ -104,6 +108,7 @@ public class AddUserActivity extends AppCompatActivity {
                 break;
             case 2:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //调用打开相机的工具类
                     imageUri = CameraUtil.startCamera(AddUserActivity.this, 2);
                 } else {
                     ToastUtil.show(this, "你拒绝了授权");
@@ -120,14 +125,17 @@ public class AddUserActivity extends AppCompatActivity {
                 case 2:
                     Uri uri;
                     if (requestCode == 1) {
+                        //使用相册的图片
                         uri = data.getData();
                     } else {
                         uri = imageUri;
                     }
+                    //使用框架显示图片
                     Glide.with(AddUserActivity.this).load(uri).into(photo);
 
                     final String acount = inputAcount.getText().toString().trim();
                     showPD("正在注册");
+                    //获取压缩过的图片，包括通过URI获取图片路径
                     filePath = CompressBitmapUtil.CompressBitmap(
                          CameraUtil.getRealPathFromURI(AddUserActivity.this,uri));
                     final HashMap<String, String> options = new HashMap<String, String>();
@@ -135,6 +143,7 @@ public class AddUserActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            //添加用户
                             final JSONObject res = client.addUser(acount, "这是测试" + acount,
                                     Arrays.asList("group1", "group2"), filePath, options);
                             Log.e("返回的数据", res.toString());
@@ -161,6 +170,7 @@ public class AddUserActivity extends AppCompatActivity {
         }
     }
 
+    //从相册获取照片
     private void getPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");

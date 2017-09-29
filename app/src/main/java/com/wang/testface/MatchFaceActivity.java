@@ -37,6 +37,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * 人脸对比
+ */
+
 public class MatchFaceActivity extends AppCompatActivity {
 
     private ImageView[] imageIv = new ImageView[2];
@@ -98,6 +102,7 @@ public class MatchFaceActivity extends AppCompatActivity {
         matchBtn = (Button) findViewById(R.id.match_result_btn);
         listent();
 
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 
@@ -105,10 +110,12 @@ public class MatchFaceActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                //选择图片1还是图片2
                 photoIndex = checkedId == R.id.match_image1_rb ? 0 : 1;
             }
         });
 
+        //从相机获取图片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +129,7 @@ public class MatchFaceActivity extends AppCompatActivity {
             }
         });
 
+        //启动相机拍照
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,6 +150,7 @@ public class MatchFaceActivity extends AppCompatActivity {
                 final StringBuilder sb = new StringBuilder();
                 final ArrayList<String> pathArray = new ArrayList<String>();
                 final HashMap<String, String> options = new HashMap<String, String>();
+                //使用活体检测
                 options.put("image_liveness", "faceliveness,faceliveness");
                 pathArray.add(photoPath[0]);
                 pathArray.add(photoPath[1]);
@@ -158,6 +167,7 @@ public class MatchFaceActivity extends AppCompatActivity {
                                     sb.append(m.toString());
                                 }
                             }
+                            //显示信息
                             Log.e("JSON数据", response.toString());
                             Message message = Message.obtain();
                             message.what = 1;
@@ -210,12 +220,14 @@ public class MatchFaceActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case 1:
+                    //获取图片1
                     Uri uri = data.getData();
                     photoPath[photoIndex] = CompressBitmapUtil.CompressBitmap(
                             CameraUtil.getRealPathFromURI(MatchFaceActivity.this,uri));
                     Glide.with(MatchFaceActivity.this).load(uri).into(imageIv[photoIndex]);
                     break;
                 case 2:
+                    //获取图片2
                     photoPath[photoIndex] = CompressBitmapUtil.CompressBitmap(
                             CameraUtil.getRealPathFromURI(MatchFaceActivity.this,imageUri));
                     Glide.with(MatchFaceActivity.this).load(imageUri).into(imageIv[photoIndex]);

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
+ * 压缩图片
  * Created by 夜雨飘零 on 2017/9/29.
  */
 

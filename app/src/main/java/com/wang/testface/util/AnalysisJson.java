@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * 解析JSON的工具类
  * Created by 夜雨飘零 on 2017/9/19.
  */
 

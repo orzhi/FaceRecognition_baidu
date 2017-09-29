@@ -30,6 +30,7 @@ public class GetGroupListActivity extends AppCompatActivity {
         group = (TextView) findViewById(R.id.getGroupList_tv);
         Button getGroup = (Button) findViewById(R.id.getGroupList);
 
+        //获取所有组
         getGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,8 +39,11 @@ public class GetGroupListActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         HashMap<String, Object> options = new HashMap<String, Object>(2);
+                        //从第0个开始
                         options.put("start", 0);
+                        //查找10个
                         options.put("num", 10);
+                        //获取结果
                         final JSONObject res = client.getGroupList(options);
                         Log.e("结果",res.toString());
                         runOnUiThread(new Runnable() {

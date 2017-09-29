@@ -84,6 +84,8 @@ public class DetectFaceActivity extends AppCompatActivity {
         Button startCameraBtn = (Button) findViewById(R.id.detect_camera_btn);
         photoInfo = (TextView) findViewById(R.id.detect_info);
         image = (ImageView) findViewById(R.id.detect_image);
+
+        //从相册获取图片
         getPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +99,7 @@ public class DetectFaceActivity extends AppCompatActivity {
             }
         });
 
+        //调用相机拍照
         startCameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +113,7 @@ public class DetectFaceActivity extends AppCompatActivity {
             }
         });
 
+        //初始化API
         client = new AipFace(FaceKey.APP_ID, FaceKey.API_KEY, FaceKey.SECRET_KEY);
     }
 
@@ -126,6 +130,7 @@ public class DetectFaceActivity extends AppCompatActivity {
                 break;
             case 2:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //调用工具类打开相机
                     cameraUri = CameraUtil.startCameraSave(DetectFaceActivity.this, 2);
                 } else {
                     ToastUtil.show(this, "你拒绝了授权");
@@ -144,28 +149,35 @@ public class DetectFaceActivity extends AppCompatActivity {
 
                     Uri uri;
                     if (requestCode == 1) {
+                        //获取相册图片的URI
                         uri = data.getData();
                     } else {
                         uri = cameraUri;
                     }
 
+                    //获取压缩过的图片，包括通过URI获取图片路径
                     filePath = CompressBitmapUtil.CompressBitmap(
                             CameraUtil.getRealPathFromURI(DetectFaceActivity.this,uri));
 
+                    //使用图片框架显示图片
                     Glide.with(DetectFaceActivity.this).load(uri).into(image);
 
                     final HashMap<String, String> options = new HashMap<>();
+                    //最多识别10个人
                     options.put("max_face_num", "10");
+                    //要显示人脸的信息
                     options.put("face_fields", "age,beauty,expression,gender,glasses,race,qualities");
                     // 参数为本地图片路径
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             StringBuilder sb = new StringBuilder();
+                            //获取识别结果
                             JSONObject response = client.detect(filePath, options);
                             Log.e("返回的结果", response.toString());
                             try {
                                 response.getInt("log_id");
+                                //使用工具类解析JSON
                                 DetectBean[] detectBeen = AnalysisJson.DetectJson(response);
                                 if (detectBeen != null) {
                                     for (int i = 0; i < detectBeen.length; i++) {
@@ -173,6 +185,7 @@ public class DetectFaceActivity extends AppCompatActivity {
                                         sb.append("第").append(i + 1).append("张脸：").append("\n");
                                         sb.append(d.toString()).append("\n\n");
                                     }
+                                    //显示信息
                                     Message message = Message.obtain();
                                     message.what = 1;
                                     message.obj = sb.toString();
@@ -180,6 +193,7 @@ public class DetectFaceActivity extends AppCompatActivity {
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                //返回错误数据
                                 try {
                                     Message message = Message.obtain();
                                     message.what = 2;
